@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
@@ -19,8 +20,8 @@ import { roomType, rooms, themeType, themes } from "../../utils/dropdownTypes";
 
 const options: UploadWidgetConfig = {
   apiKey: !!process.env.NEXT_PUBLIC_UPLOAD_API_KEY
-      ? process.env.NEXT_PUBLIC_UPLOAD_API_KEY
-      : "free",
+    ? process.env.NEXT_PUBLIC_UPLOAD_API_KEY
+    : "free",
   maxFileCount: 1,
   mimeTypes: ["image/jpeg", "image/png", "image/jpg"],
   editor: { images: { crop: false } },
@@ -50,6 +51,7 @@ export default function DreamPage() {
   const [error, setError] = useState<string | null>(null);
   const [photoName, setPhotoName] = useState<string | null>(null);
   const [theme, setTheme] = useState<themeType>("Modern");
+
   const [room, setRoom] = useState<roomType>("Living Room");
 
   const UploadDropZone = () => (
@@ -104,7 +106,7 @@ export default function DreamPage() {
       <Header />
       <main className="flex flex-1 w-full flex-col items-center justify-center text-center px-4 mt-4 sm:mb-0 mb-8">
         <h1 className="mx-auto max-w-4xl font-display text-4xl font-bold tracking-normal text-slate-100 sm:text-6xl mb-5">
-          Generate your <span className="text-blue-600">dream</span> room
+          Generate your dream room
         </h1>
         <ResizablePanel>
           <AnimatePresence mode="wait">
@@ -113,14 +115,9 @@ export default function DreamPage() {
                 <>
                   <div className="space-y-4 w-full max-w-sm">
                     <div className="flex mt-3 items-center space-x-3">
-                      <Image
-                        src="/number-1-white.svg"
-                        width={30}
-                        height={30}
-                        alt="1 icon"
-                      />
+                      
                       <p className="text-left font-medium">
-                        Choose your room theme.
+                        1: Choose your room theme.
                       </p>
                     </div>
                     <DropDown
@@ -133,14 +130,9 @@ export default function DreamPage() {
                   </div>
                   <div className="space-y-4 w-full max-w-sm">
                     <div className="flex mt-10 items-center space-x-3">
-                      <Image
-                        src="/number-2-white.svg"
-                        width={30}
-                        height={30}
-                        alt="1 icon"
-                      />
+                      
                       <p className="text-left font-medium">
-                        Choose your room type.
+                        2: Choose your room type.
                       </p>
                     </div>
                     <DropDown
@@ -151,14 +143,9 @@ export default function DreamPage() {
                   </div>
                   <div className="mt-4 w-full max-w-sm">
                     <div className="flex mt-6 w-96 items-center space-x-3">
-                      <Image
-                        src="/number-3-white.svg"
-                        width={30}
-                        height={30}
-                        alt="1 icon"
-                      />
+                      
                       <p className="text-left font-medium">
-                        Upload a picture of your room.
+                        3: Upload a picture of your room.
                       </p>
                     </div>
                   </div>
@@ -171,9 +158,8 @@ export default function DreamPage() {
                 </div>
               )}
               <div
-                className={`${
-                  restoredLoaded ? "visible mt-6 -ml-8" : "invisible"
-                }`}
+                className={`${restoredLoaded ? "visible mt-6 -ml-8" : "invisible"
+                  }`}
               >
                 <Toggle
                   className={`${restoredLoaded ? "visible mb-6" : "invisible"}`}
@@ -218,7 +204,7 @@ export default function DreamPage() {
                         className="rounded-2xl relative sm:mt-0 mt-2 cursor-zoom-in w-full h-96"
                         width={475}
                         height={475}
-                        onLoadingComplete={() => setRestoredLoaded(true)}
+                        onLoad={() => setRestoredLoaded(true)}
                       />
                     </a>
                   </div>
@@ -269,6 +255,17 @@ export default function DreamPage() {
                     Download Generated Room
                   </button>
                 )}
+                {restoredImage && !loading && (<Link legacyBehavior
+                  href={{
+                    pathname: 'http://localhost:8501',
+                    query: { restoredImage: restoredImage },
+                  }}
+                >
+                  <a className="bg-blue-600 rounded-xl text-white font-medium px-4 py-3 sm:mt-10 mt-8 hover:bg-blue-500 transition">
+                    Edit your dream room
+                  </a>
+                </Link>)}
+
               </div>
             </motion.div>
           </AnimatePresence>
